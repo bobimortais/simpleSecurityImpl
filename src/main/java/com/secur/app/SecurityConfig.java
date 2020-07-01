@@ -16,11 +16,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     @Autowired
     private UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 
-    @Bean
-    public UserAuthenticationFilter userAuthFilter()
-    {
-        return new UserAuthenticationFilter();
-    }
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
@@ -29,6 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .and().exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(userAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new UserAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
