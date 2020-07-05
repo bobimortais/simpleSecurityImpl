@@ -48,6 +48,14 @@ public class ExampleController
                 session.setMaxAge(0);
                 servletResponse.addCookie(session);
             }
+            else
+            {
+                response = "There is not session to log out";
+            }
+        }
+        else
+        {
+            response = "There is not session to log out";
         }
         return response;
     }
