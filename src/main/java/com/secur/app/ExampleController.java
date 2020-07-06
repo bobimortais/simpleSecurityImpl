@@ -1,40 +1,46 @@
 package com.secur.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class ExampleController
 {
+    @Autowired
+    private SessionRepo sessionRepo;
+
     @GetMapping(value = "/authenticate")
     public String authenticate(HttpServletResponse servletResponse)
     {
         String response = "Authenticated";
-        Cookie cookie = new Cookie("springsession", "test");
+        String sessionId = UUID.randomUUID().toString();
+        Cookie cookie = new Cookie("springsession", sessionId);
         cookie.setMaxAge(7 * 24 * 60 * 60);
         cookie.setHttpOnly(true);
         servletResponse.addCookie(cookie);
+        UserSession userSession = new UserSession(sessionId,"TEST");
+        sessionRepo.save(userSession);
         return response;
     }
 
     @GetMapping(value = "/ronaldo")
-    public String ronaldo()
+    public String showAuthenticated(@CookieValue(value = "springsession") String sessionId)
     {
-        String response = "User authenticated";
+        List<UserSession> userSession = sessionRepo.findSession(sessionId);
+        String response = "User " + userSession.get(0).getUserName() + " authenticated for session " + userSession.get(0).getSessionId();
         return response;
     }
 
     @GetMapping(value = "/exit")
-    public String authenticate(HttpServletRequest servletRequest, HttpServletResponse servletResponse)
+    public String expireSession(HttpServletRequest servletRequest, HttpServletResponse servletResponse)
     {
         Cookie[] allCookies = ((HttpServletRequest) servletRequest).getCookies();
         String response = "Logged out";

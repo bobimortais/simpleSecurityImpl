@@ -1,6 +1,5 @@
 package com.secur.app;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import javax.servlet.*;
@@ -11,9 +10,6 @@ import java.util.Arrays;
 
 public class UserAuthenticationFilter implements Filter
 {
-    @Autowired
-    private UserRepo userRepo;
-
     @Override
     public void doFilter (
             ServletRequest request, ServletResponse response, FilterChain chain)
