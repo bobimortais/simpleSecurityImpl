@@ -15,7 +15,7 @@ public class UserAuthenticationFilter implements Filter
             ServletRequest request, ServletResponse response, FilterChain chain)
             throws ServletException, IOException
     {
-        System.out.println( ((HttpServletRequest) request).getRequestURL().toString());
+        System.out.println("URL called: " + ((HttpServletRequest) request).getRequestURL().toString());
         Cookie[] allCookies = ((HttpServletRequest) request).getCookies();
 
         if (allCookies != null) {

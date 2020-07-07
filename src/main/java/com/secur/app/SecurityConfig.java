@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .and().exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(new UserAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new UserAuthenticationFilter(), BasicAuthenticationFilter.class);
     }
 }

@@ -31,8 +31,8 @@ public class ExampleController
         return response;
     }
 
-    @GetMapping(value = "/ronaldo")
-    public String showAuthenticated(@CookieValue(value = "springsession") String sessionId)
+    @GetMapping(value = "/hello")
+    public String hello(@CookieValue(value = "springsession") String sessionId)
     {
         List<UserSession> userSession = sessionRepo.findSession(sessionId);
         String response = "User " + userSession.get(0).getUserName() + " authenticated for session " + userSession.get(0).getSessionId();
@@ -43,6 +43,7 @@ public class ExampleController
     public String expireSession(HttpServletRequest servletRequest, HttpServletResponse servletResponse)
     {
         Cookie[] allCookies = ((HttpServletRequest) servletRequest).getCookies();
+        System.out.println("Sendo Executado");
         String response = "Logged out";
         if (allCookies != null) {
             Cookie session =
